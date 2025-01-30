@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>식품</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, #0033A0, #FF6600, #0099FF, #FFD700);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .login-container a {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: white;
+            background-color: #0033A0;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+        .login-container a:hover {
+            background-color: #FFD700;
+            color: #0033A0;
+        }
+
+        nav {
+            background-color: #f8f8f8;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 한 줄에 4개씩 배치 */
+            gap: 20px; /* 카드 간격 */
+        }
+
+        .product {
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .price {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" style="text-decoration: none;">
+            <h1>ShopNova</h1>
+        </a>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="상품을 검색하세요.">
+        </div>
+        <div class="login-container">
+            <a href="/users/login">로그인</a>
+            <a href="/users/signUp">회원가입</a>
+        </div>
+    </header>
+
+    <nav class="menu">
+        <a href="/electronics.html">전자제품</a>
+        <a href="/clothing.html">의류</a>
+        <a href="/food.html">식품</a>
+        <a href="/beauty.html">화장품</a>
+        <a href="/sports.html">스포츠</a>
+    </nav>
+
+    <h1>식품</h1>
+
+    <div class="container">
+        <div th:each="product : ${products}">
+            <!-- 상품 클릭 시 product.html로 이동 -->
+            <a th:href="@{/product(id=${product.id})}" style="text-decoration: none; color: inherit;">
+                <div class="product">
+                    <img th:src="${product.image}" alt="상품 이미지">
+                    <h3 th:text="${product.name}">상품명</h3>
+                    <p class="price" th:text="${product.price} + '원'">가격</p>
+                    <p th:text="${product.description}">설명</p>
+                </div>
+            </a> <!-- ⬅️ a 태그를 올바르게 닫음 -->
+        </div>
+    </div>
+</body>
+</html>
+

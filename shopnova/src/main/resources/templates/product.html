@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 상세</title>
+    <style>
+        /* 기본 스타일 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+        }
+        header {
+            background-color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, #0033A0, #FF6600, #0099FF, #FFD700);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0;
+            cursor: pointer;
+        }
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .login-container a {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: white;
+            background-color: #0033A0;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        .login-container a:hover {
+            background-color: #FFD700;
+            color: #0033A0;
+        }
+        /* 메뉴 스타일 */
+        .menu {
+            display: flex;
+            justify-content: center;
+            background-color: #f9f9f9;
+            padding: 10px 0;
+        }
+        .menu a {
+            text-decoration: none;
+            color: #333;
+            margin: 0 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .menu a:hover {
+            color: #0033A0;
+        }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        .product-image img { width: 100%; border-radius: 8px; }
+        .price { color: red; font-size: 24px; font-weight: bold; }
+        
+        /* 별점 스타일 */
+        .rating {
+            font-size: 24px;
+            color: gold;
+            margin: 10px 0;
+        }
+
+        /* 수량 선택 */
+        .quantity {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .quantity input {
+            width: 50px;
+            padding: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* 구매 버튼 스타일 */
+        .buy-buttons { margin-top: 20px; display: flex; gap: 10px; }
+        button { padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; border: none; }
+        .cart { background-color: #0033A0; color: white; }
+        .buy { background-color: #FF6600; color: white; }
+        .cart:hover { background-color: #002366; }
+        .buy:hover { background-color: #FF4500; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" style="text-decoration: none;">
+            <h1>ShopNova</h1>
+        </a>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="상품을 검색하세요.">
+        </div>
+        <div class="login-container">
+            <a href="/users/login">로그인</a>
+            <a href="/users/signUp">회원가입</a>
+        </div>
+    </header>
+
+    <nav class="menu">
+        <a href="/electronics.html">전자제품</a>
+        <a href="/clothing.html">의류</a>
+        <a href="/food.html">식품</a>
+        <a href="/beauty.html">화장품</a>
+        <a href="/sports.html">스포츠</a>
+    </nav>
+
+    <div class="container">
+        <!-- 상품 이미지 -->
+        <div class="product-image">
+            <img th:src="${product.image}" alt="상품 이미지">
+        </div>
+
+        <!-- 상품 정보 -->
+        <h2 th:text="${product.name}">상품명</h2>
+        <p class="price" th:text="${product.price} + '원'">가격</p>
+        <p th:text="${product.description}">설명</p>
+
+        <!-- 별점 -->
+        <div class="rating">
+            <span th:each="star : ${#numbers.sequence(1, product.rating)}">★</span>
+            <span th:each="empty : ${#numbers.sequence(product.rating + 1, 5)}">☆</span>
+            <span th:text="'(' + ${product.rating} + '/5)'"></span>
+        </div>
+
+        <!-- 구매 수량 선택 -->
+        <div class="quantity">
+            <label for="quantity">구매 수량:</label>
+            <input type="number" id="quantity" name="quantity" min="1" value="1">
+        </div>
+
+        <!-- 장바구니 & 구매 버튼 -->
+        <div class="buy-buttons">
+            <button class="cart">장바구니 담기</button>
+            <button class="buy">바로구매</button>
+        </div>
+    </div>
+</body>
+</html>
