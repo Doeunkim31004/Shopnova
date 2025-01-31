@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>장바구니</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, #0033A0, #FF6600, #0099FF, #FFD700);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .login-container a {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: white;
+            background-color: #0033A0;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        .login-container a:hover {
+            background-color: #FFD700;
+            color: #0033A0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .cart-item img {
+            width: 80px;
+            border-radius: 5px;
+        }
+        .item-details {
+            flex: 1;
+            margin-left: 15px;
+        }
+        .item-price {
+            color: red;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .quantity input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+        }
+        .total-price {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: right;
+        }
+        .checkout-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background-color: #0033A0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .checkout-button:hover {
+            background-color: #002366;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+        <a href="/" style="text-decoration: none;">
+            <h1>ShopNova</h1>
+        </a>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="상품을 검색하세요.">
+        </div>
+        <div class="login-container">
+            <a href="/users/login">로그인</a>
+            <a href="/users/signUp">회원가입</a>
+        </div>
+    </header>
+
+<div class="container">
+    <h2>장바구니</h2>
+
+    <div id="cart-items">
+        <!-- 장바구니 상품 목록이 여기에 동적으로 추가됨 -->
+    </div>
+
+    <p class="total-price">총 주문 금액: <span id="totalAmount">0</span>원</p>
+    
+    <button class="checkout-button">구매하기</button>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function updateCart() {
+        let cartContainer = document.getElementById('cart-items');
+        let totalAmount = 0;
+        cartContainer.innerHTML = '';
+
+        cart.forEach((item, index) => {
+            let itemElement = document.createElement('div');
+            itemElement.classList.add('cart-item');
+            itemElement.innerHTML = `
+                <img src="${item.image}" alt="상품 이미지">
+                <div class="item-details">
+                    <p>${item.name}</p>
+                    <p class="item-price">${item.price}원</p>
+                </div>
+                <div class="quantity">
+                    <input type="number" value="${item.quantity}" min="1" data-index="${index}">
+                </div>
+                <button onclick="removeItem(${index})">삭제</button>
+            `;
+            cartContainer.appendChild(itemElement);
+            totalAmount += item.price * item.quantity;
+        });
+
+        document.getElementById('totalAmount').innerText = totalAmount;
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    document.addEventListener('input', function(event) {
+        if (event.target.matches('.quantity input')) {
+            let index = event.target.getAttribute('data-index');
+            cart[index].quantity = parseInt(event.target.value);
+            updateCart();
+        }
+    });
+
+    updateCart();
+</script>
+
+
+</body>
+</html>

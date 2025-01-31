@@ -80,6 +80,10 @@ public class ProductsRepository{
 	    System.out.println("Repository 결과: " + products); // 디버깅
 	    return products;
 	}
+	public List<Products> getCartItems() {
+        return em.createQuery("SELECT p FROM Products p WHERE p.inCart = true", Products.class)
+                 .getResultList();
+    }
 
 }
 

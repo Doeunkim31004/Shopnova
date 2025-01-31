@@ -93,4 +93,27 @@ public class ProductsService {
             throw new IllegalArgumentException("Product with ID " + id + " not found");
         }
     }
+    
+ // ✅ 장바구니 상품 조회
+    public List<Products> getCartItems() {
+        return productsRepository.getCartItems();
+    }
+
+    // ✅ 특정 상품을 장바구니에 추가
+    public void addToCart(Long productId) {
+        Products product = productsRepository.findOne(productId);
+        if (product != null) {
+            product.setInCart(true);
+            productsRepository.update(product);
+        }
+    }
+
+    // ✅ 특정 상품을 장바구니에서 제거
+    public void removeFromCart(Long productId) {
+        Products product = productsRepository.findOne(productId);
+        if (product != null) {
+            product.setInCart(false);
+            productsRepository.update(product);
+        }
+    }
 }

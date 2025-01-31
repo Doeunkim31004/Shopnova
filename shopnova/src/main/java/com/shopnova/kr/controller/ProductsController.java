@@ -86,5 +86,27 @@ public class ProductsController {
         model.addAttribute("product", product);
         return "product";
     }
+    
+    // ✅ 장바구니 페이지
+    @GetMapping("/cart")
+    public String viewCart(Model model) {
+        List<Products> cartItems = productsService.getCartItems();
+        model.addAttribute("cartItems", cartItems);
+        return "cart"; // templates/cart.html
+    }
+
+    // ✅ 장바구니에 상품 추가
+    @GetMapping("/cart/add")
+    public String addToCart(@RequestParam("id") Long productId) {
+        productsService.addToCart(productId);
+        return "redirect:/cart"; // 장바구니 페이지로 이동
+    }
+
+    // ✅ 장바구니에서 상품 제거
+    @GetMapping("/cart/remove")
+    public String removeFromCart(@RequestParam("id") Long productId) {
+        productsService.removeFromCart(productId);
+        return "redirect:/cart"; // 장바구니 페이지로 이동
+    }
 }
 

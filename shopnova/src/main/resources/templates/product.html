@@ -153,5 +153,23 @@
             <button class="buy">바로구매</button>
         </div>
     </div>
+<script>
+    document.querySelector(".cart").addEventListener("click", function() {
+        let product = {
+            name: document.querySelector("h2").innerText,
+            price: parseInt(document.querySelector(".price").innerText.replace("원", "")),
+            image: document.querySelector(".product-image img").src,
+            quantity: parseInt(document.getElementById("quantity").value)
+        };
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        window.location.href = "/cart"; // 장바구니 페이지로 이동
+    });
+</script>
+
+    
 </body>
 </html>

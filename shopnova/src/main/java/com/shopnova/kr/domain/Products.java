@@ -54,4 +54,7 @@ public class Products {
 	 
 	 @Column(name = "rating")
 	 private Integer rating;
+	 
+	 @Column(name = "in_cart", nullable = false)
+	 private boolean inCart = false;
 }
